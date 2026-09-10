@@ -2,13 +2,13 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 use crate::application::registry::EngineRegistry;
+use crate::application::verify_usecase::VerifyQuineUseCase;
 use crate::domain::error::DomainError;
 use crate::domain::language::Language;
 use crate::domain::payload::{Payload, PayloadMode};
 use crate::domain::quine::Quine;
 use crate::domain::report::VerificationReport;
 use crate::infrastructure::detector::SystemDetector;
-use crate::infrastructure::sandbox::SandboxRunner;
 
 #[derive(Debug, Clone)]
 pub struct GenerateQuineRequest {
@@ -77,32 +77,9 @@ impl GenerateQuineUseCase {
                 diff_preview: None,
             })
         } else if request.verify {
-            let (stdout, runtime) = SandboxRunner::execute(language, &quine.source_code)?;
-            let success = quine.source_code == stdout;
-            let output_sha = Quine::calculate_sha256(&stdout);
-
-            let diff_preview = if !success {
-                Some(format!(
-                    "Byte length: source={}, output={}\nFirst 100 chars output: {:?}",
-                    quine.stats.bytes,
-                    stdout.len(),
-                    stdout.chars().take(100).collect::<String>()
-                ))
-            } else {
-                None
-            };
-
-            Some(VerificationReport {
-                language,
-                success,
-                is_dry_run: false,
-                runtime_binary: runtime.binary,
-                source_bytes: quine.stats.bytes,
-                output_bytes: stdout.len(),
-                sha256_source: quine.sha256.clone(),
-                sha256_output: output_sha,
-                diff_preview,
-            })
+            let verifier = VerifyQuineUseCase;
+            let report = verifier.execute(language, &quine.source_code)?;
+            Some(report)
         } else {
             None
         };
