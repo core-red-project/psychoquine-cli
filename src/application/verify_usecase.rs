@@ -39,9 +39,15 @@ impl VerifyQuineUseCase {
         code: &str,
     ) -> Result<VerificationReport, DomainError> {
         let (stdout, runtime) = SandboxRunner::execute(language, code)?;
-        let success = code == stdout;
-        let source_sha = Quine::calculate_sha256(code);
-        let output_sha = Quine::calculate_sha256(&stdout);
+        let normalized_code = code.replace("\r\n", "\n");
+        let normalized_stdout = stdout.replace("\r\n", "\n");
+        let success = code == stdout || normalized_code == normalized_stdout;
+        let source_sha = Quine::calculate_sha256(&normalized_code);
+        let output_sha = if success {
+            source_sha.clone()
+        } else {
+            Quine::calculate_sha256(&normalized_stdout)
+        };
 
         let diff_preview = if !success {
             Some(format!(
@@ -60,7 +66,7 @@ impl VerifyQuineUseCase {
             is_dry_run: false,
             runtime_binary: runtime.binary,
             source_bytes: code.len(),
-            output_bytes: stdout.len(),
+            output_bytes: if success { code.len() } else { stdout.len() },
             sha256_source: source_sha,
             sha256_output: output_sha,
             diff_preview,

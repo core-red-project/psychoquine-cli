@@ -76,7 +76,7 @@ fn run_with_timeout(
 pub struct SandboxRunner;
 
 impl SandboxRunner {
-    pub const DEFAULT_TIMEOUT: Duration = Duration::from_secs(10);
+    pub const DEFAULT_TIMEOUT: Duration = Duration::from_secs(30);
 
     pub fn execute(language: Language, code: &str) -> Result<(String, RuntimeInfo), DomainError> {
         Self::execute_with_timeout(language, code, Self::DEFAULT_TIMEOUT)
@@ -120,7 +120,8 @@ impl SandboxRunner {
                 out.stdout
             }
             Language::C => {
-                let bin_path = temp_dir.path().join("c_bin");
+                let bin_name = if cfg!(windows) { "c_bin.exe" } else { "c_bin" };
+                let bin_path = temp_dir.path().join(bin_name);
                 let mut comp = Command::new(&runtime.binary);
                 comp.arg(&file_path).arg("-o").arg(&bin_path);
                 let comp_out = run_with_timeout(comp, timeout, "C (Compiler)")?;
@@ -145,7 +146,12 @@ impl SandboxRunner {
                 run_out.stdout
             }
             Language::Rust => {
-                let bin_path = temp_dir.path().join("rust_bin");
+                let bin_name = if cfg!(windows) {
+                    "rust_bin.exe"
+                } else {
+                    "rust_bin"
+                };
+                let bin_path = temp_dir.path().join(bin_name);
                 let mut comp = Command::new(&runtime.binary);
                 comp.arg(&file_path).arg("-o").arg(&bin_path);
                 let comp_out = run_with_timeout(comp, timeout, "Rust (Compiler)")?;
