@@ -18,7 +18,7 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Complete Clean Architecture modernization in pure standalone Rust (`psychoquine`).
 - 18 canonical Quine engines based on the Wikipedia catalog (Python, JavaScript, ANSI C, C#, Rust, Bash, Perl, PHP, Ruby, Go, Lua, OCaml, Pascal, Scheme, Common Lisp, DOS Batch, Brainfuck, HQ9+).
 - Sandboxed live execution verification asserting 100% byte-for-byte self-replication.
-- Hardened execution sandbox with concurrent pipe draining and 10-second process timeouts.
+- Hardened execution sandbox with concurrent pipe draining and 30-second process timeouts.
 - Direct external file payload embedding (`--payload-file <PATH>`) and stdin support (`--stdin`).
 - Payload size bounds checking (512 KB limit) protecting against memory exhaustion.
 - Shell completion generator for Bash, Zsh, Fish, PowerShell, and Elvish (`psychoquine completions`).
