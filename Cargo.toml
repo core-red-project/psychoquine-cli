@@ -1,16 +1,26 @@
-[workspace]
-resolver = "2"
-members = ["core", "src-tauri"]
-
-[workspace.package]
-version = "0.1.0"
+[package]
+name = "psychoquine"
+version = "0.2.0"
 edition = "2021"
-authors = ["Sxnnyside Project"]
+authors = ["Core Red Project", "Sxnnyside Project"]
 license = "MIT"
-repository = "https://github.com/Sxnnyside-Project/psychoquine"
-description = "Universal resource-agnostic Quine generator"
+repository = "https://github.com/core-red-project/psychoquine-cli"
+description = "Universal resource-agnostic Quine generator — Core Red Project"
 
-[workspace.dependencies]
+[[bin]]
+name = "psychoquine"
+path = "src/main.rs"
+
+[lib]
+name = "psychoquine"
+path = "src/lib.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive", "cargo"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 thiserror = "1.0"
+colored = "2.1"
+sha2 = "0.10"
+tempfile = "3.10"
+clap_complete = "4.5"

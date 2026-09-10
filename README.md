@@ -1,16 +1,22 @@
 # PsychoQuine
 
+![Banner](PsychoQuine.png)
+
+![Version](https://img.shields.io/badge/version-0.2.0-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+[![CI](https://github.com/core-red-project/psychoquine-cli/workflows/CI/badge.svg)](https://github.com/core-red-project/psychoquine-cli/actions)
+
 <p align="center">
-  <strong>Universal Quine Generator</strong><br>
-  <em>A CoreRed Experimental Tool</em>
+  <strong>Self-Replicating ✦ 18 Languages ✦ Live Verification</strong><br>
+  <em>Universal resource-agnostic Quine generator and verifier.</em>
 </p>
 
 <p align="center">
-  <a href="#about">About</a> •
-  <a href="#features">Features</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#architecture">Architecture</a> •
+  <a href="#about">About</a> ✦
+  <a href="#features">Features</a> ✦
+  <a href="#installation">Installation</a> ✦
+  <a href="#usage">Usage</a> ✦
+  <a href="#architecture">Architecture</a> ✦
   <a href="#contributing">Contributing</a>
 </p>
 
@@ -18,191 +24,99 @@
 
 ## About
 
-**PsychoQuine** is a universal, resource-agnostic Quine generator capable of transforming arbitrary textual resources—programs, SDKs, configurations, or any text—into self-replicating program structures.
+**PsychoQuine** is an autonomous CLI and meta-programming engine for generating legitimate, mathematically sound quines across 18 canonical programming languages.
 
-A [quine](https://en.wikipedia.org/wiki/Quine_(computing)) is a program that produces a copy of its own source code as its only output. PsychoQuine extends this concept by allowing you to embed any input into a quine structure.
+Quines are often treated as brittle one-offs or esoteric curiosities. PsychoQuine treats self-replication as a formal engineering discipline, providing exact reflexive generation, live child-process sandbox verification, payload injection, and runtime discovery.
+
+Each generated program strictly satisfies Kleene's Second Recursion Theorem: it takes zero external input and outputs an exact copy of its own source code ($\text{execute}(Q) \equiv Q$), verified byte-for-byte via SHA-256 hashing.
 
 ### Philosophy
 
-> *"Code that writes itself."*
+> *"A quine that cannot self-verify is not a quine."*
 
-PsychoQuine embodies the hacker ethos: minimal, precise, and uncompromising. No bloat, no unnecessary features—just raw functionality delivered with surgical precision.
-
-This is a **CoreRed** project, part of an experimental toolkit for developers who appreciate the art of meta-programming.
+This is a Core Red Project, part of the Sxnnyside Project's experimental branch.
 
 ## Features
 
-- **Universal Input**: Accept any textual resource as input
-- **Dual Output Formats**:
-  - One-line quine: Compact, single-line representation
-  - Multi-line quine: Formatted, readable representation
-- **Multiple Escape Strategies**: Standard, Unicode, Hexadecimal, Raw
-- **Zero Configuration**: Works out of the box with sensible defaults
-- **Cross-Platform**: Desktop app for macOS, Windows, and Linux
-- **CLI Tool**: Scriptable command-line interface
-- **Library**: Embeddable Rust crate for custom integrations
+- **18 Language Engines**: Canonical quines for Python, JavaScript, C, C#, Rust, Bash, Perl, PHP, Ruby, Go, Lua, OCaml, Pascal, Scheme, Common Lisp, DOS Batch, Brainfuck, and HQ9+.
+- **Zero-Tolerance Verification**: Sandboxed live execution testing ensuring 100% byte-for-byte identity against system runtimes.
+- **Resource & Payload Injection**: Embed arbitrary text, external files, or ASCII banners into quines without breaking self-replication.
+- **Kleene Recursion Explainer**: Mathematical breakdown and technical invariants inspector for any target language (`explain`).
+- **Host Runtime Doctor**: Automatic PATH discovery identifying available compilers and interpreters on the host system.
+- **Safe Simulation**: Dry-run mode (`--dry-run`) projecting byte size, expansion ratios, and SHA-256 hashes without compiling.
+- **Shell Autocompletion**: Native completion script generation for Bash, Zsh, Fish, PowerShell, and Elvish.
 
 ## Installation
 
 ### Prerequisites
 
-- [Rust](https://rustup.rs/) (stable toolchain)
-- [Deno](https://deno.land/) (v1.40+)
-- [Tauri CLI](https://tauri.app/) (for desktop builds)
+- Rust toolchain 1.85+ (`cargo`, `rustc`)
 
 ### From Source
 
 ```bash
-# Clone the repository
-git clone https://github.com/Sxnnyside-Project/psychoquine.git
-cd psychoquine
+git clone https://github.com/core-red-project/psychoquine-cli.git
+cd psychoquine-cli
 
-# Build the core library and CLI
 cargo build --release
-
-# The CLI binary will be at target/release/psychoquine
 ```
 
-### CLI Only
-
-```bash
-# Install directly via Cargo
-cargo install --path core
-```
-
-### Desktop App
-
-```bash
-# Install Tauri CLI if not already installed
-cargo install tauri-cli
-
-# Run in development mode
-cd src-tauri
-cargo tauri dev
-
-# Build for production
-cargo tauri build
-```
+The compiled binary will be located at `target/release/psychoquine`.
 
 ## Usage
 
-### CLI
-
 ```bash
-# Basic usage - pipe input
-echo "Hello, World!" | psychoquine
+# Generate and print a Python quine to stdout
+psychoquine generate python
 
-# Direct input
-psychoquine "Your text here"
+# Generate a Rust quine with payload and verify execution
+psychoquine generate rust "Core Red Project" --verify
 
-# One-line output only
-psychoquine -o "input text"
+# Embed an external file into a C quine and save to disk
+psychoquine generate c --payload-file ./data.txt -o quine.c
 
-# Multi-line output only
-psychoquine -m "input text"
+# Simulate generation without running compilers
+psychoquine rust --dry-run
 
-# With Unicode escaping
-psychoquine -e unicode "input with émojis 🎉"
+# Audit host system compilers and runtimes
+psychoquine doctor
 
-# Show statistics
-psychoquine -s "input text"
+# Explain the Kleene recursion mechanics of a language
+psychoquine explain python
 
-# Quiet mode (no banner)
-psychoquine -q "input text"
-```
-
-### Desktop App
-
-1. Launch PsychoQuine
-2. Enter your text in the **INPUT** panel
-3. Select your preferred escape strategy
-4. Click **GENERATE QUINE**
-5. Toggle between **ONE-LINE** and **MULTI-LINE** views
-6. Click **COPY** to copy the output to clipboard
-
-### As a Library
-
-```rust
-use psychoquine_core::{generate, FormatOptions, QuineGenerator};
-
-// Simple usage
-let output = generate("Hello, World!")?;
-println!("One-line: {}", output.one_line);
-println!("Multi-line: {}", output.multi_line);
-
-// With custom options
-let generator = QuineGenerator::with_options(
-    FormatOptions::default()
-        .with_escape_strategy(EscapeStrategy::Unicode)
-        .with_indent("  ")
-);
-let output = generator.generate("Your input")?;
+# Generate shell completions (e.g. Zsh)
+psychoquine completions zsh > ~/.zfunc/_psychoquine
 ```
 
 ## Architecture
 
 ```
-psychoquine/
-├── core/               # Rust quine engine (library + CLI)
-│   └── src/
-│       ├── lib.rs      # Public API
-│       ├── main.rs     # CLI binary
-│       ├── generator.rs # Core generation logic
-│       ├── formatter.rs # Output formatting
-│       └── escape.rs   # Escape strategies
-│
-├── ui/                 # Fresh + Deno UI
-│   ├── routes/         # Page routes
-│   ├── islands/        # Interactive components
-│   ├── components/     # Static components
-│   └── static/         # CSS and assets
-│
-├── src-tauri/          # Tauri desktop wrapper
-│   └── src/
-│       ├── main.rs     # Tauri entry point
-│       └── commands.rs # IPC commands
-│
-└── docs/               # Documentation
+psychoquine-cli/
+├── src/
+│   ├── domain/          # Pure entities: Quine, Language, Payload, VerificationReport
+│   ├── engines/         # 18 canonical QuineEngine trait drivers
+│   ├── application/     # Use cases: generate, verify, explain, doctor
+│   ├── infrastructure/  # OS adapters: child sandbox, PATH detector, terminal
+│   └── presentation/    # CLI layer: Clap v4 commands, view rendering
+├── tests/               # End-to-end sandbox integration tests
+└── Cargo.toml           # Standalone Rust crate configuration
 ```
 
-### Stack
-
-| Component | Technology |
-|-----------|------------|
-| Core Engine | Rust |
-| Desktop App | Tauri |
-| UI Runtime | Deno |
-| UI Framework | Fresh |
-| Language | TypeScript |
-
-## Project Status
-
-**Current Version**: 0.1.0 (Alpha)
-
-This project is under active development. Core functionality is complete, but the API may change before 1.0.
-
-### Roadmap
-
-- [x] Core quine generation engine
-- [x] CLI interface
-- [x] Desktop UI
-- [ ] Additional language-specific quine templates
-- [ ] Plugin system for custom transformations
-- [ ] WASM build for browser usage
+For developer recipes and local tasks, see the task runner configuration in `Justfile` (`just --list`).
 
 ## Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions are accepted. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-Before contributing, please read our [Code of Conduct](CODE_OF_CONDUCT.md).
+Before contributing, read the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <p align="center">
-  <strong>PsychoQuine</strong> — A CoreRed Project<br>
-  <em>© 2026 Sxnnyside Project</em>
+  <strong>PsychoQuine</strong> — Core Red Project<br>
+  <em>&copy; 2026 Sxnnyside Project</em>
 </p>

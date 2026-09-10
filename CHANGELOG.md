@@ -1,79 +1,47 @@
 # Changelog
 
-All notable changes to PsychoQuine will be documented in this file.
+All notable changes to **PsychoQuine** are documented here.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
 
 ## [Unreleased]
 
-### Planned
-- WASM build for browser usage
-- Additional language-specific quine templates
-- Plugin system for custom transformations
-- Performance optimizations for large inputs
-
 ---
 
-## [0.1.0] - 2026-02-03
+## [0.2.0] — 2026-09-10
 
 ### Added
-- Initial release of PsychoQuine
-- Core quine generation engine in Rust
-- Four escape strategies: Standard, Unicode, Hexadecimal, Raw
-- One-line and multi-line output formats
-- CLI interface with multiple options
-- Tauri-based desktop application
-- Fresh + Deno web UI with Islands architecture
-- Dark, terminal-inspired UI design
-- Real-time quine generation
-- Copy-to-clipboard functionality
-- Generation statistics (input size, output size, expansion ratio)
-- Comprehensive documentation (User Guide, Developer Guide)
-- MIT License
-- Full test coverage for core engine
 
-### Architecture
-- Rust core library (`psychoquine-core`)
-- Tauri desktop wrapper
-- Fresh web framework with Deno runtime
-- TypeScript-only UI implementation
-- IPC-based communication between UI and backend
+- Complete Clean Architecture modernization in pure standalone Rust (`psychoquine`).
+- 18 canonical Quine engines based on the Wikipedia catalog (Python, JavaScript, ANSI C, C#, Rust, Bash, Perl, PHP, Ruby, Go, Lua, OCaml, Pascal, Scheme, Common Lisp, DOS Batch, Brainfuck, HQ9+).
+- Sandboxed live execution verification asserting 100% byte-for-byte self-replication.
+- Hardened execution sandbox with concurrent pipe draining and 10-second process timeouts.
+- Direct external file payload embedding (`--payload-file <PATH>`) and stdin support (`--stdin`).
+- Payload size bounds checking (512 KB limit) protecting against memory exhaustion.
+- Shell completion generator for Bash, Zsh, Fish, PowerShell, and Elvish (`psychoquine completions`).
+- Kleene recursion theorem educational explainer (`psychoquine explain`).
+- Host system PATH runtime inspection (`psychoquine doctor`).
+- Safe execution simulation mode (`--dry-run`).
+- Standard task runner abstraction layer (`Justfile`).
+- Documentation following the Sxnnyside Project OSS Bundle for Core Red Project.
 
-### Documentation
-- README with installation and usage instructions
-- Developer Guide with architecture overview
-- User Guide with detailed usage examples
-- Contributing guidelines
-- Code of Conduct
+### Removed
+
+- Legacy unmaintained web UI (Fresh/Deno), desktop wrappers (Tauri 1.x), and obsolete shell scripts.
 
 ---
 
-## Release Notes
+## [0.1.0] — 2026-02-03
 
-### 0.1.0 - "First Contact"
+### Added
 
-This is the first public release of PsychoQuine, a CoreRed experimental tool for universal quine generation.
-
-**What's Working:**
-- ✅ Core generation engine
-- ✅ CLI tool with all features
-- ✅ Desktop app with full UI
-- ✅ Multiple escape strategies
-- ✅ Dual output formats
-- ✅ Cross-platform support
-
-**Known Limitations:**
-- Output format is JavaScript-based
-- Maximum input size is 10 MB
-- No custom template support yet
-
-**Platform Support:**
-- macOS (Intel + Apple Silicon)
-- Windows (x64)
-- Linux (x64)
+- Initial prototype release.
 
 ---
 
-[Unreleased]: https://github.com/Sxnnyside-Project/psychoquine/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/Sxnnyside-Project/psychoquine/releases/tag/v0.1.0
+[Unreleased]: https://github.com/core-red-project/psychoquine-cli/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/core-red-project/psychoquine-cli/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/core-red-project/psychoquine-cli/releases/tag/v0.1.0

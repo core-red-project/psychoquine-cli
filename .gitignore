@@ -107,3 +107,6 @@ temp/
 *.tmp
 *.temp
 *.bak
+
+# Animoria cache & staged cleanup
+.animoria/
